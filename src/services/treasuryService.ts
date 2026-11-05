@@ -35,14 +35,8 @@ export async function ensureDefaultCashbox(): Promise<void> {
 }
 
 export async function listCashboxes(): Promise<Cashbox[]> {
-  if (!isElectronAvailable()) {
-    const list = getDesktopApi().farm.treasury.listCashboxes;
-    return list ? (await list()).map((cb) => ({ ...cb, account_id: cb.account_id ?? null })) : [];
-  }
-  await ensureDefaultCashbox();
-  const db = await getDb();
-  const res = await db.query<Cashbox>('SELECT id, name, opening_balance, balance, is_active, account_id FROM cashboxes ORDER BY name');
-  return res.rows;
+  const rows = await getDesktopApi().farm.treasury.cashboxes();
+  return rows.map((cb) => ({ ...cb, account_id: cb.account_id ?? null }));
 }
 
 export async function listCashTransactions(limit = 100, filters?: { type?: string; dateFrom?: string; dateTo?: string }): Promise<CashTransaction[]> {

@@ -162,7 +162,7 @@ export interface DesktopApi {
       refundCredit: (input: { partyId: string; cashboxId: string; date: string; amount: number }) => Promise<{ id: string; docNumber: string; amount: number; creditAfter: number }>;
     };
     treasury: {
-      cashboxes: () => Promise<unknown[]>;
+      cashboxes: () => Promise<MockCashbox[]>;
       listCashboxes?: () => Promise<MockCashbox[]>;
       listTransactions?: (limit?: number) => Promise<MockCashTransaction[]>;
       createCashbox: (input: Record<string, unknown>) => Promise<{ id: string }>;
